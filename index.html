@@ -170,7 +170,7 @@ html,body{width:100%;height:100%;background:var(--surface);overflow:hidden;
 .chips{display:flex;gap:4px;align-items:center;}
 .chip{display:flex;gap:2px;align-items:center;padding:4px;border-radius:4px;background:var(--on-surface);color:#fff;font-size:12px;}
 .chip .star{width:12px;height:12px;display:inline-block;}
-.prompt-box{flex:1;background:var(--surface-container);border:1px solid var(--outline-light);border-radius:4px;
+.prompt-box{flex:0 0 auto;background:var(--surface-container);border:1px solid var(--outline-light);border-radius:4px;
   padding:16px;display:flex;flex-direction:column;gap:12px;font-size:12px;}
 .prompt-box .pl{font-family:'Paperlogy','Pretendard',sans-serif;color:var(--on-surface);}
 .prompt-box .pt{font-family:'Pretendard';color:var(--neutral);line-height:1.4;}
@@ -201,6 +201,7 @@ html,body{width:100%;height:100%;background:var(--surface);overflow:hidden;
 @keyframes genFlow{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 .btn:disabled{cursor:default;}
 .btn.gen:disabled{background:#3a3a3a;color:#8a8a8a;animation:none;opacity:1;}
+.btn.violet:disabled{background:var(--outline-light);border-color:var(--outline-light);color:var(--dust);}
 /* 우: 영상 + 세로 썸네일 */
 .v-right{flex:1;min-width:0;height:100%;padding:40px;display:flex;gap:24px;align-items:center;overflow:hidden;}
 .v-video{flex:1;min-width:0;aspect-ratio:670/480;max-height:100%;border:1px solid var(--outline-dark);border-radius:4px;position:relative;overflow:hidden;}
@@ -314,7 +315,7 @@ let loadTimers = [];   // 로딩 애니메이션 타이머(화면 전환 시 정
 function viewWrite(){
   const right = `<div class="counter"><span>전체</span><b id="cnt">0자</b><span>(공백 포함)</span></div>
     <button class="btn" onclick="fillSample()">저장</button>
-    <button class="btn violet" onclick="openOverlay('loading')">확인</button>`;
+    <button class="btn violet" id="wConfirm" disabled onclick="openOverlay('loading')">확인</button>`;
   return `<div class="screen write active">
     ${head(right)}
     ${nav(1, `<button class="btn" onclick="openManuscript()">${IC.import}<span class="brand">원고 불러오기</span></button>`)}
@@ -555,6 +556,7 @@ function updateCount(){
   const b=document.getElementById("wBody"); if(!b)return;
   const n=b.value.replace(/\s/g,"").length;
   document.getElementById("cnt").textContent=n.toLocaleString()+"자";
+  const c=document.getElementById("wConfirm"); if(c) c.disabled = n<10;   // 10글자 이상이어야 확인 활성
 }
 function autoGrow(el){ if(!el)return; el.style.height="auto"; el.style.height=el.scrollHeight+"px"; }
 /* 본문 등장인물 추정 → 박스 강조 */
